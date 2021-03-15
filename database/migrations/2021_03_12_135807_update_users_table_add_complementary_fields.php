@@ -33,7 +33,7 @@ class UpdateUsersTableAddComplementaryFields extends Migration
                 $table->string('address_additional')->nullable()->default('');
                 $table->string('city')->default('');
                 $table->char('state', 2)->default('');
-                $table->string('country')->default('Brazil');
+                $table->string('country')->nullable()->default('Brazil');
             });
         });
     }

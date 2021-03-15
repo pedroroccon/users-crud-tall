@@ -18,8 +18,19 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'last_name', 
         'email',
         'password',
+        'cpf', 
+        'phone', 
+        'postcode', 
+        'address', 
+        'number', 
+        'district', 
+        'address_additional', 
+        'city', 
+        'state', 
+        'country', 
     ];
 
     /**
@@ -40,4 +51,26 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Returns a string with all 
+     * address informations.
+     *
+     * @return string
+     */
+    public function getAddressCompleteAttribute()
+    {
+        return $this->address . ', N ' . $this->numer . ' - ' . $this->district;
+    }
+
+    /**
+     * Return the a URL for the 
+     * given resource.
+     *
+     * @return string
+     */
+     public function path()
+     {
+         return route('users.show', ['user' => $this->id]);
+     }
 }

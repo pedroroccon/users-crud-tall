@@ -5,17 +5,13 @@ namespace App\Http\Livewire;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rule;
+use Livewire\WithPagination;
 use Livewire\Component;
   
 class Users extends Component
 {
 
-    /**
-     * Handles the users.
-     * 
-     * @var \Illuminate\Database\Eloquent\Collection
-     */
-    public $users;
+    use WithPagination;
 
     /**
      * Handles the user id, if 
@@ -31,23 +27,15 @@ class Users extends Component
      * 
      * @var mixed
      */
-    public $name, 
-        $last_name, 
-        $email, 
-        $password, 
-        $cpf, 
-        $phone, 
-        $postcode, 
-        $address, 
-        $number, 
-        $district, 
-        $address_additional, 
-        $city, 
-        $state, 
-        $terms;
+    public $name, $last_name, $email, $password, $cpf, $phone, $postcode, $address, $number, $district, $address_additional, $city, $state, $country, $terms;
 
+    /**
+     * Handles the form modal state.
+     * (visible or hidden).
+     *
+     * @var boolean
+     */
     public $isOpen = false;
-
 
     /**
      * Defines what view we should 
@@ -57,8 +45,9 @@ class Users extends Component
      */
     public function render()
     {
-        $this->users = User::all();
-        return view('livewire.users.list');
+        return view('livewire.users.list', [
+            'users' => User::orderBy('id', 'desc')->paginate()
+        ]);
     }
 
     /**
@@ -68,7 +57,7 @@ class Users extends Component
      */
     public function rules()
     {
-        return [
+        $rules = [
             'name' => 'required',
             'last_name' => 'required', 
             'email' => [
@@ -87,18 +76,35 @@ class Users extends Component
             'city' => 'required', 
             'state' => 'required|size:2', 
             'password' => 'required|min:8', 
-            'terms' => 'sometimes|accepted'
         ];
+
+        // If we are creating a new user, 
+        // we should verify if the user 
+        // accepted the terms and conditions.
+        if (empty($this->user_id)) {
+            $rules['terms'] = 'accepted';
+        }
+
+        return $rules;
     }
 
     /**
-     * 
+     * Runs after any update to the Livewire component's 
+     * data (Using wire:model, not directly inside PHP)
+     *
+     * @return void
      */
     public function updated($property)
     {
         $this->validateOnly($property);
     }
   
+    /**
+     * Resets the input fields and 
+     * opens the form modal.
+     *
+     * @return void
+     */
     public function create()
     {
         $this->resetInputFields();
@@ -151,7 +157,7 @@ class Users extends Component
         $this->address_additional = null;
         $this->city = null;
         $this->state = null;
-        $this->terms = null;
+        $this->country = null;
     }
 
     /**
@@ -165,8 +171,20 @@ class Users extends Component
         $this->validate();
 
         User::updateOrCreate(['id' => $this->user_id], [
-            'name' => $this->name,
-            'email' => $this->email
+            'name' => $this->name, 
+            'last_name' => $this->last_name, 
+            'email' => $this->email, 
+            'password' => $this->password, 
+            'cpf' => $this->cpf, 
+            'phone' => $this->phone, 
+            'postcode' => $this->postcode, 
+            'address' => $this->address, 
+            'number' => $this->number, 
+            'district' => $this->district, 
+            'address_additional' => $this->address_additional, 
+            'city' => $this->city, 
+            'state' => $this->state, 
+            'country' => $this->country, 
         ]);
   
         session()->flash('message', $this->user_id ? 'Usuário ' . $this->name . ' atualizado com sucesso!' : 'Usuário ' . $this->name . ' adicionado com sucesso!');
@@ -187,6 +205,7 @@ class Users extends Component
         $this->name = $user->name;
         $this->last_name = $user->last_name;
         $this->email = $user->email;
+        $this->password = $user->password;
         $this->cpf = $user->cpf;
         $this->phone = $user->phone;
         $this->postcode = $user->postcode;
@@ -196,6 +215,7 @@ class Users extends Component
         $this->address_additional = $user->address_additional;
         $this->city = $user->city;
         $this->state = $user->state;
+        $this->country = $user->country;
     
         $this->openModal();
     }
@@ -211,6 +231,17 @@ class Users extends Component
         $user->delete();
 
         session()->flash('message', 'Usuário ' . $user->name . ' removido com sucesso!');
+    }
+
+    /**
+     * Defines the default pagination 
+     * view.
+     *
+     * @return string
+     */
+    public function paginationView()
+    {
+        return 'components.pagination';
     }
 
     /**

@@ -4,27 +4,25 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class Button extends Component
+class Base extends Component
 {
-    
+
     /**
-     * Defines which template 
-     * we should load, based on 
-     * the type of button.
-     *
+     * Defines the page's 
+     * title.
+     * 
      * @var string
      */
-    public $type;
-
+    public $title;
+    
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($type = 'default')
+    public function __construct($title = null)
     {
-        $this->type = $type;
-        
+        $this->title = $title;
     }
 
     /**
@@ -34,6 +32,6 @@ class Button extends Component
      */
     public function render()
     {
-        return view('components.buttons.' . $this->type);
+        return view('layouts.base');
     }
 }

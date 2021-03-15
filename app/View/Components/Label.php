@@ -11,7 +11,6 @@ class Label extends Component
 
     public $name;
 
-    
     /**
      * Create a new component instance.
      *

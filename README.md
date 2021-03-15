@@ -74,3 +74,10 @@ Alternativly, you can specify the application port
 ```
 php artisan serve --port 2563
 ```
+
+## Running tests
+Use the command below to run the unit and feature tests
+
+```
+php artisan test
+```
