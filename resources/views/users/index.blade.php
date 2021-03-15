@@ -1,4 +1,3 @@
-@extends('layouts.app')
-@section('content')
+<x-app title="Gerenciar usuários">
     <livewire:users/>
-@endsection
+</x-app>

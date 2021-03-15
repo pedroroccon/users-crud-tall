@@ -36,7 +36,7 @@ class UserFactory extends Factory
             'district' => $this->faker->sentence(2), 
             'address_additional' => $this->faker->optional()->sentence(2), 
             'city' => $this->faker->city, 
-            'state' => $this->faker->state, 
+            'state' => $this->faker->stateAbbr, 
             'country' => $this->faker->country, 
             'remember_token' => Str::random(10),
         ];

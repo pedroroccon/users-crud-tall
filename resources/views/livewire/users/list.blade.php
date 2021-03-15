@@ -12,7 +12,7 @@
 
             <!-- Feedback messages -->
             @if (session()->has('message'))
-                <div class="bg-green-600 text-white font-bold leading-tighter px-6 py-5 shadow-lg my-3 -mt-1">
+                <div class="bg-green-600 text-white font-bold leading-tighter px-6 py-5 mb-0 -mt-1">
                     <span class="text-sm">{{ session()->get('message') }}</span>
                 </div>
             @endif

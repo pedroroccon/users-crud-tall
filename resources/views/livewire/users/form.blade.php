@@ -41,6 +41,11 @@
             <!-- Address -->
             <div class="col-span-2">
               <x-label name="CEP" attribute="postcode"/>
+
+              <!--
+                We use .debounce here to prevent unnecessary 
+                requests to the server.
+              -->
               <input wire:keydown.debounce.500ms="getPostcode()" wire:model="postcode" type="text" name="postcode" id="postcode" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
               @error('postcode') <small class="text-red-500 mt-2">{{ $message }}</small>@enderror
             </div>
@@ -79,13 +84,16 @@
             <div x-data="{ hidePassword: true }" class="col-span-6">
               <label for="password" class="block text-sm font-medium text-gray-700">Digite sua senha</label>
               <input :type="hidePassword ? 'password' : 'text'" name="password" id="password" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-              <a href="#" class="mt-3 inline-flex items-center text-sm font-medium" @click="hidePassword = !hidePassword">
-                <svg class="mr-2 w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                </svg>
-                Mostrar/Esconder
-              </a>
+              @error('password') <small class="text-red-500 mt-2">{{ $message }}</small>@enderror
+              <div class="block">
+                <a href="#" class="mt-3 w-100 inline-flex items-center text-sm font-medium" @click="hidePassword = !hidePassword">
+                  <svg class="mr-2 w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                  Mostrar/Esconder
+                </a>
+              </div>
             </div>
 
               <!-- Terms and conditions -->
@@ -94,11 +102,12 @@
                   <hr class="my-2">
                   <div class="flex items-start mt-6">
                     <div class="flex items-center h-5">
-                      <input id="terms" name="terms" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                      <input id="terms" name="terms" value="1" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
                     </div>
                     <div class="ml-3 text-sm">
                       <label for="terms" class="font-medium text-gray-700">Li e aceito os termos e condições</label>
                       <p class="text-gray-500">Marcando este campo você está de acordo com a nossa política de privacidade e nossos termos de uso da plataforma.</p>
+                      @error('terms') <small class="block text-red-500 mt-2">{{ $message }}</small>@enderror
                     </div>
                   </div>
                 </div>
