@@ -75,14 +75,16 @@ class Users extends Component
             'address' => 'required', 
             'number' => 'required', 
             'city' => 'required', 
+            'password' => 'nullable|min:8', 
             'state' => 'required|size:2', 
-            'password' => 'required|min:8', 
         ];
 
         // When creating a new user, 
         // we should verify if the user 
-        // accepted the terms and conditions.
+        // typed a password and accepted 
+        // the terms and conditions.
         if (empty($this->user_id)) {
+            $rules['password'] = 'required|min:8';
             $rules['terms'] = 'accepted';
         }
 
@@ -170,11 +172,10 @@ class Users extends Component
     {
         $this->validate();
 
-        User::updateOrCreate(['id' => $this->user_id], [
+        $fields = [
             'name' => $this->name, 
             'last_name' => $this->last_name, 
             'email' => $this->email, 
-            'password' => $this->password, 
             'cpf' => $this->cpf, 
             'phone' => $this->phone, 
             'postcode' => $this->postcode, 
@@ -184,8 +185,16 @@ class Users extends Component
             'address_additional' => $this->address_additional, 
             'city' => $this->city, 
             'state' => $this->state, 
-        ]);
-  
+        ];
+
+        // If the user retypes the password
+        // when updating, then we should 
+        // store the new password in database
+        if ( ! empty($this->password)) {
+            $fields['password'] = bcrypt($this->password);
+        }
+
+        User::updateOrCreate(['id' => $this->user_id], $fields);
         session()->flash('message', $this->user_id ? 'Usuário ' . $this->name . ' atualizado com sucesso!' : 'Usuário ' . $this->name . ' adicionado com sucesso!');
   
         $this->closeModal();

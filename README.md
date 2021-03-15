@@ -1,6 +1,9 @@
 # Users CRUD - With TALL Stack (Tailwind, Alpine, Laravel and Livewire)
 This is a sample application to demonstrate how we can use the TALL stack to make a simple users CRUD.
 
+## Demo
+You can check the [Application DEMO here](http://pedroroccon.com.br/tall)
+
 ## How to install
 
 ### Dependencies
@@ -27,6 +30,11 @@ Let's start creating a **.env** file, and generate a unique key to application:
 ```
 cp -R .env.example .env
 php artisan key:generate
+```
+
+Open the .env file and change the **APP_URL** to your application URL. By default, we are using the built-in PHP server, which creates a localhost connection on port 8000. If you want to deploy this application in your server, you should modify this to your server's URL.
+```
+APP_URL=http://localhost
 ```
 
 We should now configure the database. For this example, we are using the **SQLite** database, but you can use MySQL, SQLServer or PostgreSQL. Let's open the .env file and change the DB configuration lines to use the SQLite.  
