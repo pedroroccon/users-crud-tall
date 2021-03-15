@@ -30,18 +30,16 @@
             <div class="flex flex-col justify-around">
                 <div class="space-y-6">
                     <a href="{{ route('home') }}">
-                        <x-logo class="w-auto h-16 mx-auto text-indigo-600" />
+                        <x-logo class="w-auto h-16 mx-auto text-indigo-600"/>
                     </a>
+                    
+                    <div class="w-1/2 mx-auto text-center">
+                        <p>Aplicação criada para ilustrar um <strong>CRUD</strong> simples usando a Stack <strong>TALL</strong> (Tailwind, Alpine, Laravel e Livewire)</p>
+                        <a href="{{ route('users.index') }}" class="inline-flex items-center px-4 py-2 my-5 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Gerenciar usuários</a>
+                        <small class="block">Desenvolvido por Pedro Roccon</small>
+                    </div>
 
-                    <h1 class="text-5xl font-extrabold tracking-lighter text-center text-gray-600">
-                        {{ config('app.name') }}
-                    </h1>
 
-                    <ul class="list-reset">
-                        <li class="inline px-4">
-                            <a href="{{ route('users.index') }}" class="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150">Gerenciar usuários</a>
-                        </li>
-                    </ul>
                 </div>
             </div>
         </div>

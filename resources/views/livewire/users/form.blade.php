@@ -15,22 +15,28 @@
 					@error('email') <small class="text-red-500 mt-2">{{ $message }}</small>@enderror
 				</div>
 				<div class="col-span-3">
-					<x-input wire:model="cpf" label="CPF" attribute="cpf"/>
-					@error('cpf') <small class="text-red-500 mt-2">{{ $message }}</small>@enderror
+					<div x-data="{ maskOptions: '000.000.000-00' }" x-init="IMask($refs.cpf, { mask: maskOptions })">
+						<x-input x-ref="cpf" wire:model="cpf" label="CPF" attribute="cpf"/>
+						@error('cpf') <small class="text-red-500 mt-2">{{ $message }}</small>@enderror
+					</div>
 				</div>
 				<div class="col-span-3">
-					<x-input wire:model="phone" label="Celular" attribute="phone"/>
-					@error('phone') <small class="text-red-500 mt-2">{{ $message }}</small>@enderror
+					<div x-data="{ maskOptions: '(00) 0 0000-0000' }" x-init="IMask($refs.phone, { mask: maskOptions })">
+						<x-input x-ref="phone" wire:model="phone" label="Celular (com DDD)" attribute="phone"/>
+						@error('phone') <small class="text-red-500 mt-2">{{ $message }}</small>@enderror
+					</div>
 				</div>
 
 				<!-- Address -->
 				<div class="col-span-2">
 					<!--
 						We use .debounce here to prevent unnecessary 
-						requests to the server.
+						requests to ViaCEP servers.
 						-->
-					<x-input wire:model="postcode" label="CEP" attribute="postcode" wire:keydown.debounce.500ms="getPostcode()"/>
-					@error('postcode') <small class="text-red-500 mt-2">{{ $message }}</small>@enderror
+					<div x-data="{ maskOptions: '00000-000' }" x-init="IMask($refs.postcode, { mask: maskOptions })">
+						<x-input x-ref="postcode" wire:model="postcode" label="CEP" attribute="postcode" wire:keydown.debounce.500ms="getPostcode()"/>
+						@error('postcode') <small class="text-red-500 mt-2">{{ $message }}</small>@enderror
+					</div>
 				</div>
 				<div class="col-span-4">
 					<x-input wire:model="address" label="Endereço" attribute="address" readonly="true"/>

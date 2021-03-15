@@ -1,4 +1,5 @@
 import 'alpinejs';
+import IMask from 'imask';
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

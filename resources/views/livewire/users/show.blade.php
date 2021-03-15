@@ -11,7 +11,7 @@
             <x-attribute title="Sobrenome" :value="$user->last_name"/>
             <x-attribute title="E-mail" :value="$user->email"/>
             <x-attribute title="CPF" :value="$user->cpf"/>
-            <x-attribute title="Celular(2)" :value="$user->phone"/>
+            <x-attribute title="Celular" :value="$user->phone"/>
             <x-attribute title="CEP" :value="$user->postcode"/>
             <x-attribute title="Endereço" :value="$user->address_complete"/>
             <x-attribute title="Complemento" :value="$user->address_additional"/>

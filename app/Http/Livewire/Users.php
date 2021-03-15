@@ -205,7 +205,6 @@ class Users extends Component
         $this->name = $user->name;
         $this->last_name = $user->last_name;
         $this->email = $user->email;
-        $this->password = $user->password;
         $this->cpf = $user->cpf;
         $this->phone = $user->phone;
         $this->postcode = $user->postcode;
