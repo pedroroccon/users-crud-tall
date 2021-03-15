@@ -1,0 +1,1 @@
+<span class="mt-2 w-100 inline-flex items-center text-sm font-medium {{ $type == 'danger' ? 'text-red-500' : null }}">{{ $slot }}</span>

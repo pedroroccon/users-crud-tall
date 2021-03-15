@@ -27,7 +27,7 @@ class Users extends Component
      * 
      * @var mixed
      */
-    public $name, $last_name, $email, $password, $cpf, $phone, $postcode, $address, $number, $district, $address_additional, $city, $state, $country, $terms;
+    public $name, $last_name, $email, $password, $cpf, $phone, $postcode, $address, $number, $district, $address_additional, $city, $state, $terms;
 
     /**
      * Handles the form modal state.
@@ -67,10 +67,11 @@ class Users extends Component
             ],
             'cpf' => [
                 'required', 
+                'size:14', 
                 Rule::unique('users', 'cpf')->ignore($this->user_id)
             ], 
-            'phone' => 'required', 
-            'postcode' => 'required', 
+            'phone' => 'required|size:16', 
+            'postcode' => 'required|size:9', 
             'address' => 'required', 
             'number' => 'required', 
             'city' => 'required', 
@@ -78,7 +79,7 @@ class Users extends Component
             'password' => 'required|min:8', 
         ];
 
-        // If we are creating a new user, 
+        // When creating a new user, 
         // we should verify if the user 
         // accepted the terms and conditions.
         if (empty($this->user_id)) {
@@ -157,7 +158,6 @@ class Users extends Component
         $this->address_additional = null;
         $this->city = null;
         $this->state = null;
-        $this->country = null;
     }
 
     /**
@@ -184,7 +184,6 @@ class Users extends Component
             'address_additional' => $this->address_additional, 
             'city' => $this->city, 
             'state' => $this->state, 
-            'country' => $this->country, 
         ]);
   
         session()->flash('message', $this->user_id ? 'Usuário ' . $this->name . ' atualizado com sucesso!' : 'Usuário ' . $this->name . ' adicionado com sucesso!');
@@ -214,7 +213,6 @@ class Users extends Component
         $this->address_additional = $user->address_additional;
         $this->city = $user->city;
         $this->state = $user->state;
-        $this->country = $user->country;
     
         $this->openModal();
     }
@@ -233,8 +231,8 @@ class Users extends Component
     }
 
     /**
-     * Defines the default pagination 
-     * view.
+     * Defines the default 
+     * pagination view.
      *
      * @return string
      */
@@ -245,23 +243,41 @@ class Users extends Component
 
     /**
      * Make a request to the ViaCEP API
-     * and returns the address informations 
+     * then returns the address informations 
      * based on a given postcode.
      * 
      * @return void
      */
     public function getPostcode()
     {
-        // Makes a get request to ViaCEP API
-        $response = Http::get('https://viacep.com.br/ws/' . $this->postcode . '/json/');
+        // We only make a request to ViaCEP 
+        // if our postcode is equal or greater 
+        // than 9.
+        if (strlen($this->postcode) >= 9) {
 
-        if ($response->successful()) {
-            $response = json_decode($response->body());
+            // Makes a get request to ViaCEP API
+            $response = Http::get('https://viacep.com.br/ws/' . $this->postcode . '/json/');
+            $response = $response->json();
 
-            $this->address = $response->logradouro;
-            $this->city = $response->localidade;
-            $this->district = $response->bairro;
-            $this->state = $response->uf;
+            // ViaCEP API returns an array with 
+            // error setted to true, if the poste 
+            // code can't be found.
+            if(array_key_exists('erro', $response)) {
+                $this->address = null;
+                $this->city = null;
+                $this->district = null;
+                $this->state = null;
+
+                // Thrown a custom validation message.
+                $this->addError('postcode', 'CEP ' . $this->postcode . ' não encontrado.');
+
+                return false;
+            }
+
+            $this->address = $response['logradouro'];
+            $this->city = $response['localidade'];
+            $this->district = $response['bairro'];
+            $this->state = $response['uf'];
         }
     }
 }

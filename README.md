@@ -68,8 +68,8 @@ To start and use your app, run the following command:
 php artisan serve
 ```
 
-Your application should starts running at http://localhost:8000
-Alternativly, you can specify the application port
+Your application should starts running at http://localhost:8000  
+Alternatively, you can specify the application port
 
 ```
 php artisan serve --port 2563
