@@ -65,7 +65,7 @@
                 </div>
             @endif
         @else
-            <div class="m-5 p-5 rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 text-white">
+            <div class="mn-5 p-5 rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 text-white">
                 <span class="w-100 inline-flex items-center text-sm font-medium">Nenhum registro encontrado.</span>
             </div>
         @endif

@@ -28,9 +28,9 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'last_name' => $this->faker->lastName, 
-            'cpf' => $this->faker->unique()->numerify('###########'), 
-            'phone' => $this->faker->phoneNumber, 
-            'postcode' => $this->faker->postcode, 
+            'cpf' => $this->faker->unique()->numerify('###.###.###-##'), 
+            'phone' => $this->faker->numerify('(##) # ####-####'), // You can use: $this->faker->phoneNumber, 
+            'postcode' => $this->faker->numerify('#####-###'), // You can use: $this->faker->postcode, 
             'address' => $this->faker->streetName, 
             'number' => $this->faker->buildingNumber, 
             'district' => $this->faker->sentence(2), 
